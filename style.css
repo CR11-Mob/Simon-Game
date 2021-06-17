@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+
+body {
+  font-family: "Rubik", sans-serif;
+  /* font-family: 'Noto Sans KR', sans-serif; */
+  font-family: "Montserrat", sans-serif;
+  font-family: "Press Start 2P", cursive;
+  margin: 0px;
+  padding: 0px;
+}
+
+#container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(1, 31, 63, 1);
+}
+
+#gameArea {
+  display: flex;
+  flex-wrap: wrap;
+  height: 80%;
+  width: 40%;
+
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: black;
+  border-radius: 50%;
+
+  /* clip-path: circle(40%); */
+  /* background-color: rgba(254, 242, 191, 1); */
+}
+
+#gameArea::after {
+  content: "Simon";
+  display: flex;
+  width: 50%;
+  height: 50%;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+
+  background-color: black;
+  /* border-radius: 50%; */
+  color: whitesmoke;
+  font-size: 1.5rem;
+  clip-path: circle(40%);
+}
+
+#gameArea > div {
+  height: 50%;
+  width: 50%;
+  /* border: 5px soild black; */
+}
+
+#box-0 {
+  background-color: rgba(0, 128, 0, 1);
+  border-right: 5px solid black;
+  border-bottom: 5px solid black;
+  border-radius: 50%;
+}
+
+#box-1 {
+  background-color: rgba(255, 0, 0, 1);
+  border-bottom: 5px solid black;
+  border-radius: 50%;
+}
+
+#box-2 {
+  background-color: rgba(255, 255, 0, 1);
+  border-right: 5px solid black;
+  border-radius: 50%;
+}
+
+#box-3 {
+  background-color: rgba(0, 0, 255, 1);
+  border-radius: 50%;
+}
