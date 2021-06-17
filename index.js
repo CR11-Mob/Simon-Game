@@ -1,3 +1,4 @@
+const container = document.getElementById("container");
 const gameArea = document.getElementById("gameArea");
 const overlay = document.querySelector(".overlay");
 
@@ -13,7 +14,7 @@ const renderGameBtns = () => {
   for (let i = 0; i < buttonColors.length; i++) {
     let randomSelectedColor = buttonColors[i];
 
-    boxDiv = document.createElement("div");
+    let boxDiv = document.createElement("div");
     boxDiv.id = `${randomSelectedColor}-${i}`;
 
     boxDiv.addEventListener("click", (e) => {
@@ -42,10 +43,10 @@ document.addEventListener("keyup", (e) => {
 const allBtns = gameArea.querySelectorAll("div");
 
 let levels = 1;
-highestLevel = localStorage.getItem("highestLevel");
+let highestLevel = localStorage.getItem("highestLevel");
 
 let beepArr = [];
-let userClickArr = null;
+let userInputArr = null;
 let arrIndex = null;
 
 let timer = 0;
@@ -161,7 +162,7 @@ const gameOverDisplay = () => {
   level.className = "player-level";
 
   if (highestLevel !== null) {
-    if ((levels == highestLevel)) {
+    if (levels == highestLevel) {
       level.innerHTML = `WOW! YOU ALMOST BREAK THE RECORD... ${highestLevel}`;
     } else if (levels > highestLevel) {
       localStorage.setItem("highestLevel", levels);
@@ -184,6 +185,6 @@ const gameOverDisplay = () => {
   container.append(overlay);
 
   document.getElementById("restart").addEventListener("click", () => {
-      window.location.reload();
+    window.location.reload();
   });
 };
