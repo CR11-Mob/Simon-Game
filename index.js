@@ -1,10 +1,20 @@
 const gameArea = document.getElementById("gameArea");
+const overlay = document.querySelector(".overlay");
+
+const gameLevelDiv = document.getElementById("gameLevels");
+
+/*************** COLOR ARRAY ***************/
+
+let buttonColors = ["green", "red", "yellow", "blue"];
+
+/*************** RENDER GAME BUTTONS ***************/
 
 const renderGameBtns = () => {
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < buttonColors.length; i++) {
+    let randomSelectedColor = buttonColors[i];
+
     boxDiv = document.createElement("div");
-    boxDiv.id = `box-${i}`;
-    boxDiv.className = "game-btns";
+    boxDiv.id = `${randomSelectedColor}-${i}`;
 
     boxDiv.addEventListener("click", (e) => {
       clickHandler(e, i);
@@ -15,48 +25,165 @@ const renderGameBtns = () => {
 };
 renderGameBtns();
 
+/*************** GAME START EVENT ***************/
+
+document.addEventListener("keyup", (e) => {
+  // console.log(e);
+  overlay.style.display = "none";
+  if (e.key === "Enter") {
+    setTimeout(() => {
+      randomBeep();
+    }, 500);
+  }
+});
+
+/*************** VARIABLE DECLARATION ***************/
+
 const allBtns = gameArea.querySelectorAll("div");
 
-// console.log(allBtns);
-
 let levels = 1;
+highestLevel = localStorage.getItem("highestLevel");
+
 let beepArr = [];
 let userClickArr = null;
 let arrIndex = null;
 
+let timer = 0;
+let speed = 300;
+let gameOver = false;
+
+/*************** RANDOM BEEPING ***************/
+
 const randomBeep = () => {
+  timer = 0;
   arrIndex = 0;
-  console.log("level1", levels);
 
   userInputArr = [];
 
-  for (let i = 0; i < 1; i++) {
-    randomNumber = Math.trunc(Math.random() * allBtns.length);
-    console.log("random number:", randomNumber);
+  let randomNumber = Math.trunc(Math.random() * allBtns.length);
+  // console.log("random number:", randomNumber);
 
-    beepArr.push(randomNumber);
+  beepArr.push(randomNumber);
+
+  for (let i = 0; i < beepArr.length; i++) {
+    timer += speed;
+
+    let randomSelectedColor = buttonColors[beepArr[i]];
+    console.log(randomSelectedColor);
+
+    let beepColor = document.getElementById(
+      `${randomSelectedColor}-${beepArr[i]}`
+    );
+
+    setTimeout(() => {
+      beepColor.classList.add(`${randomSelectedColor}`);
+
+      let audio = new Audio(`/sounds/${randomSelectedColor}.mp3`);
+      audio.play();
+    }, timer);
+
+    setTimeout(() => {
+      beepColor.classList.remove(`${randomSelectedColor}`);
+    }, timer + speed - 100);
   }
-  levels++;
-  console.log("beep array:", beepArr);
+  // console.log("beep array:", beepArr);
 };
-randomBeep();
+
+/*************** DISPLAY PLAYER LEVEL ***************/
+
+const displayLevels = () => {
+  gameLevelDiv.innerHTML = `LEVEL ${levels}`;
+};
+displayLevels();
+
+/*************** HANDLE PLAYER CLICK ***************/
 
 const clickHandler = (e, i) => {
-  // console.log(i);
-  console.log("array index1:", arrIndex);
+  if (gameOver === true) return;
+
   userInputArr.push(i);
-  console.log("user array:", userInputArr);
+
+  let randomSelectedColor = buttonColors[i];
+  console.log(randomSelectedColor);
+
+  let clickedBtn = document.getElementById(`${randomSelectedColor}-${i}`);
+  clickedBtn.classList.add(`${randomSelectedColor}`);
+
+  setTimeout(() => {
+    clickedBtn.classList.remove(`${randomSelectedColor}`);
+  }, 300);
 
   if (i === beepArr[arrIndex]) {
-    console.log("match");
+    let audio = new Audio(`/sounds/${randomSelectedColor}.mp3`);
+    audio.play();
+
     arrIndex++;
+
     if (JSON.stringify(userInputArr) === JSON.stringify(beepArr)) {
-      // levels++;
-      randomBeep();
+      setTimeout(() => {
+        gameLevelDiv.innerHTML = "";
+        levels++;
+
+        randomBeep();
+        displayLevels();
+      }, 500);
     }
   } else if (i !== beepArr[arrIndex]) {
-    alert("not match");
+    gameOver = true;
     beepArr = [];
+
+    let wrongBeep = new Audio(`/sounds/wrong.mp3`);
+    wrongBeep.play();
+
+    setTimeout(() => {
+      gameOverDisplay();
+    }, 1000);
   }
-  console.log("array index2:", arrIndex);
+};
+
+/*************** GAME OVER ***************/
+
+const gameOverDisplay = () => {
+  console.log(levels);
+  let overlay = document.createElement("div");
+  overlay.className = "overlay";
+
+  let content = document.createElement("div");
+  content.id = "gameOverContent";
+  content.className = "content";
+
+  let gameOverText = document.createElement("div");
+  gameOverText.className = "gameOver-text";
+
+  gameOverText.innerHTML = `Game Over`;
+
+  let level = document.createElement("div");
+  level.className = "player-level";
+
+  if (highestLevel !== null) {
+    if ((levels == highestLevel)) {
+      level.innerHTML = `WOW! YOU ALMOST BREAK THE RECORD... ${highestLevel}`;
+    } else if (levels > highestLevel) {
+      localStorage.setItem("highestLevel", levels);
+      level.innerHTML = `AWESOME! YOU SET THE NEW RECORD... ${levels}`;
+    } else {
+      level.innerHTML = `HIGHEST LEVEL REACHED... ${highestLevel}`;
+    }
+  } else {
+    localStorage.setItem("highestLevel", levels);
+    level.innerHTML = `YOU REACH... LEVEL ${levels}`;
+  }
+
+  let restart = document.createElement("div");
+  restart.className = "game-restart";
+
+  restart.innerHTML = `<span id = "restart">Restart</span>`;
+
+  overlay.append(content);
+  content.append(gameOverText, level, restart);
+  container.append(overlay);
+
+  document.getElementById("restart").addEventListener("click", () => {
+      window.location.reload();
+  });
 };
