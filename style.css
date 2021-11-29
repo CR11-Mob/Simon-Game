@@ -38,6 +38,7 @@ body {
   flex-wrap: wrap;
   height: 80%;
   width: 40%;
+  min-width: 90%;
 
   justify-content: center;
   align-items: center;
