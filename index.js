@@ -166,7 +166,7 @@ const gameOverDisplay = () => {
       level.innerHTML = `WOW! YOU ALMOST BREAK THE RECORD... ${highestLevel}`;
     } else if (levels > highestLevel) {
       localStorage.setItem("highestLevel", levels);
-      level.innerHTML = `AWESOME! YOU A NEW RECORD... ${levels}`;
+      level.innerHTML = `AWESOME! YOU SET A NEW RECORD... ${levels}`;
     } else {
       level.innerHTML = `HIGHEST LEVEL REACHED... ${highestLevel}`;
     }
