@@ -79,7 +79,7 @@ const randomBeep = () => {
     setTimeout(() => {
       beepColor.classList.add(`${randomSelectedColor}`);
 
-      let audio = new Audio(`/sounds/${randomSelectedColor}.mp3`);
+      let audio = new Audio(`sounds/${randomSelectedColor}.mp3`);
       audio.play();
     }, timer);
 
@@ -115,7 +115,7 @@ const clickHandler = (e, i) => {
   }, 300);
 
   if (i === beepArr[arrIndex]) {
-    let audio = new Audio(`/sounds/${randomSelectedColor}.mp3`);
+    let audio = new Audio(`sounds/${randomSelectedColor}.mp3`);
     audio.play();
 
     arrIndex++;
@@ -133,7 +133,7 @@ const clickHandler = (e, i) => {
     gameOver = true;
     beepArr = [];
 
-    let wrongBeep = new Audio(`/sounds/wrong.mp3`);
+    let wrongBeep = new Audio(`sounds/wrong.mp3`);
     wrongBeep.play();
 
     setTimeout(() => {
